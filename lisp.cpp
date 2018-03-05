@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "tokenizer.hpp"
 #include "sexp.hpp"
 
@@ -58,10 +59,26 @@ int main(int argc, char *argv[]) {
 
 
 	// Parser
-	SExp* root = parser(token);
 
+	vector<SExp*> result;
+
+	while (token.hasNext()) {
+		SExp* root = parser(token);
+		if (root != NULL && token.ckNextToken() == 6) {
+			result.push_back(root);
+		}
+		else {
+			while (token.hasNext() && token.ckNextToken() != 6) token.skipToken();
+		}
+		token.skipToken();
+	}
+
+	cout << "===== output s-expression =====" << endl;
 	// Output
-	printSexp(root);
+	for (int i = 0; i < result.size(); i++) {
+		printSexp(result[i]);
+		cout << endl;
+	}
 
 	return 0;
 }
@@ -83,15 +100,21 @@ SExp* parser(Tokenizer& token) {
 
 	if (nextToken == 1) {
 		token.skipToken(); // skip the "("
-		SExp* s1 = parser(token); nextToken = token.ckNextToken();
+		SExp* s1 = parser(token); 
+		if (s1 == NULL) return NULL;
+
+		nextToken = token.ckNextToken();
 		if (nextToken != 3) {
 			cout << "Should be Dot here" << endl;
+			return NULL;
 		}
 		
 		token.skipToken(); // skip the "."
 
-
 		SExp* s2 = parser(token);
+
+		if (s2 == NULL) return NULL;
+
 		token.skipToken(); // skip the ")"
 
 		root->left = s1;
