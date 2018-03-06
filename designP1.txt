@@ -1,0 +1,40 @@
+==============================================================
+==			Documentation of Lisp Interpreter Part 1		==
+==============================================================
+
+My Lisp interpreter program includes following several parts:
+
+	Main function 		(lisp.cpp)
+	S-Expression class  (sexp.hpp  sexp.cpp)
+	Tokenizer class 	(tokenizer.hpp  tokenizer.cpp)
+	Parser class		(parser.hpp  parser.cpp)
+
+The way my program works is as following:
+
+(1) Main function read in the input file.
+
+(2) Main function call the tokenizer to tokenize the input strings.
+	All the tokens are stored in a Tokenize object. 
+	Calling ckNextToken() returns the type of next token.
+	Calling getNextToken() return the next token and move to next token.
+
+(3) After tokenizing, the program pass the tokens to the Parser. 
+	The Parser evaluate the s-expression based on the rules which
+	Dr. Soundarajan mentioned in:
+	http://web.cse.ohio-state.edu/~soundarajan.1/courses/6341/lispInput1.txt 
+
+(4) Output
+	The parser output the s-expression right after evaluating each of them.
+	If the s-expression is illegal, it will output the error message instead of
+	an s-expression.
+
+
+Note: This Lisp interpreter meets almost all the requirement in the Project description.
+		Just one thing to mention that this Lisp interpreter will consider lower case 
+		characters as Legal ones. This is because Dr. Soundarajan shared a correct test 
+		file which contains all lower case characters. To make this working only for 
+		uppercase characters, one can change the function isalpha() to isupper() in 
+		file tokenizer.cpp, then it will only allow upper case characters.
+
+
+	

@@ -25,16 +25,11 @@ public:
 	int getCur();
 	string getNextToken();
 	int getIntToken();
-
-	void print();
 	bool hasNext();
 	
 	void tokenize(string line);
-
 	int ckNextToken();
-
 	void skipToken();
-
 	string thisToken();
 
 };

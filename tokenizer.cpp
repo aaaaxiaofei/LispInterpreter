@@ -22,11 +22,21 @@ string Tokenizer::thisToken() {
 
 int Tokenizer::getIntToken() {
 	string str = tokens[cur++];
-	int num = 0; 
-	for (char c : str) {
+	int sign = 1;
+	int num = 0;
+	int i = 0;
+
+	if (str[0] == '+') i++;
+	else if (str[0] == '-') {
+		sign = -1;
+		i++;
+	}
+	 
+	for (; i < str.size(); i++) {
+		char c = str[i];
 		num += num * 10 + (c - '0');
 	}
-	return num;
+	return sign * num;
 }
 
 void Tokenizer::skipToken() {
@@ -37,19 +47,13 @@ bool Tokenizer::hasNext() {
 	return cur < tokens.size();
 }
 
-void Tokenizer::print() {
-	for (string token : tokens) {
-		cout << token << ' ';
-		if (token == "$") cout << endl;
-	}
-}
-
 void Tokenizer::tokenize(string line) {
 
 	// Tokenize line with only "$"
 	int numChars = 0;
 	string str = "";
-	for (char c : line) {
+	for (int i = 0; i < line.size(); i++) {
+		char c = line[i];
 		if (c != ' ' && c != '\t') {
 			str += c;
 		}
@@ -102,7 +106,8 @@ int Tokenizer::ckNextToken() {
 		return 4;	
 	}
 	else if (isalpha(str[0])) {
-		for (char c : str) {
+		for (int i = 0; i < str.size(); i++) {
+			char c = str[i];
 			if (!isdigit(c) && !isalpha(c)) return 7; 					// Illegal input
 		}
 		return 5; 														// Character

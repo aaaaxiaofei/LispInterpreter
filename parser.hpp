@@ -6,18 +6,23 @@
 #include <vector>
 #include "tokenizer.hpp"
 #include "sexp.hpp"
+#include <fstream>
 
 using namespace std;
 
 class Parser {
+private:
+	ofstream myfile;
 
-public:
-	Parser();
-	void parse(Tokenizer& token);
 	SExp* parseDot(Tokenizer& token);
 	SExp* parseList(Tokenizer& token);
 	void errorMsg(Tokenizer& token);
 	void printSexp(SExp* root);
+
+public:
+	Parser();
+	void parse(Tokenizer& token);
+
 
 };
 

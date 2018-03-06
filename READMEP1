@@ -1,0 +1,18 @@
+CSE 6341: Lisp Interpreter Project 1
+
+Student Name: Fei Xiao (xiao.466)
+
+
+(1) How to compile the code?
+	The code is writen in C++11. To compile the code, just type "make" in your command line, 
+	then the code will be compiled.
+
+(2) How to run the code?
+	After making, there is a file called 'lisp', which is the main program.
+	To run the program, using program 'lisp' with your input file name, for example:
+	
+	>>	./lisp test.txt
+
+	This command will take the input file text.txt and write the output into file 'output.txt'.
+	The output.txt contains the result of each s-expression in order. If the s-expression is illegal, 
+	the output file will show an error message at the corresponding place.
