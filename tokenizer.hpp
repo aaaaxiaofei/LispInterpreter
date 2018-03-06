@@ -1,3 +1,6 @@
+#ifndef TOKENIZER_HPP
+#define TOKENIZER_HPP
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -34,6 +37,6 @@ public:
 
 	string thisToken();
 
-
-
 };
+
+#endif

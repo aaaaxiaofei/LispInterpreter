@@ -1,3 +1,6 @@
+#ifndef SEXP_HPP
+#define SEXP_HPP
+
 #include <string>
 using namespace std;
 
@@ -14,3 +17,5 @@ public:
 	SExp(int i);
 	SExp(string s);
 };
+
+#endif

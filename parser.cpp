@@ -1,61 +1,12 @@
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include "tokenizer.hpp"
-#include "sexp.hpp"
 #include "parser.hpp"
 
-using namespace std;
+Parser::Parser() {
 
-SExp* input(Tokenizer& token);
-SExp* input2(Tokenizer& token);
-void errorMsg(Tokenizer& token);
-
-void printSexp(SExp* root) {
-	if (root == NULL) {
-		return;
-	}
-
-	if (root->left || root->right) {
-		cout << "(";
-		printSexp(root->left);
-		cout << ".";
-		printSexp(root->right);
-		cout << ")";
-	}
-	else {
-		// Left node
-		if (root->type == 4) {
-			cout << root->val;
-		}
-		else if (root->type == 5) {
-			cout << root->name;
-		}
-	}
 }
 
-
-int main(int argc, char *argv[]) {
-
-	// Token Object
-	Tokenizer token;
-
-	// Open file
-	ifstream myfile;
-	myfile.open("test1.txt");
-
-	// Read and Tokenize
-	string line;
-	while (!myfile.eof()) {
-		getline(myfile, line);
-		token.tokenize(line);
-	}
-
-
-	// parse
+void Parser::parse(Tokenizer& token) {
 	while (token.hasNext()) {
-		SExp* root = input(token);
+		SExp* root = parseDot(token);
 		if (root != NULL && (token.ckNextToken() == 6 || token.ckNextToken() == 8)) {
 			printSexp(root);
 			cout << endl;
@@ -67,12 +18,9 @@ int main(int argc, char *argv[]) {
 		if (token.ckNextToken() == 8) break; // "$$" termination
 		token.skipToken();
 	}
-
-	return 0;
 }
 
-
-SExp* input(Tokenizer& token) {
+SExp* Parser::parseDot(Tokenizer& token) {
 	
 	if (!token.hasNext()) return NULL;
 
@@ -96,7 +44,7 @@ SExp* input(Tokenizer& token) {
 		}
 
 		// Get CAR
-		SExp* s1 = input(token); 
+		SExp* s1 = parseDot(token); 
 		if (s1 == NULL) return NULL;
 
 		// Get CDR
@@ -106,7 +54,7 @@ SExp* input(Tokenizer& token) {
 		nextToken = token.ckNextToken();
 		if (nextToken == 3) {
 			token.skipToken(); // skip the "."
-			s2 = input(token);
+			s2 = parseDot(token);
 			if (s2 == NULL) return NULL;	
 
 			if (token.ckNextToken() == 2) {
@@ -118,7 +66,7 @@ SExp* input(Tokenizer& token) {
 			}
 		}
 		else {
-			s2 = input2(token);
+			s2 = parseList(token);
 			if (s2 == NULL) return NULL;
 		}
 
@@ -140,7 +88,8 @@ SExp* input(Tokenizer& token) {
 	return NULL;
 }
 
-SExp* input2(Tokenizer& token) {
+
+SExp* Parser::parseList(Tokenizer& token) {
 	
 	if (!token.hasNext()) return NULL;
 
@@ -157,8 +106,8 @@ SExp* input2(Tokenizer& token) {
 		return NULL;
 	}
 	else if (nextToken == 1) {
-		SExp* s1 = input(token); 
-		SExp* s2 = input2(token);
+		SExp* s1 = parseDot(token); 
+		SExp* s2 = parseList(token);
 
 		root->left = s1;
 		root->right = s2;
@@ -167,22 +116,21 @@ SExp* input2(Tokenizer& token) {
 	}
 	else if (nextToken == 4 || nextToken == 5) {
 
-		SExp* s1 = input(token); 
-		SExp* s2 = input2(token);
+		SExp* s1 = parseDot(token); 
+		SExp* s2 = parseList(token);
 
 		root->left = s1;
 		root->right = s2;
 		return root;
 	}
 	else if (nextToken >= 6) {
-		// errorMsg(token);
 		return NULL;
 	}
 
 	return NULL;
 }
 
-void errorMsg(Tokenizer& token) {
+void Parser::errorMsg(Tokenizer& token) {
 	if (token.ckNextToken() == 1) {
 		cout << "== error: unexpected '(' ==" << endl;
 	}
@@ -207,5 +155,28 @@ void errorMsg(Tokenizer& token) {
 	}
 	else {
 		cout << "== error: illegal character ==" << endl;
+	}
+}
+
+void Parser::printSexp(SExp* root) {
+	if (root == NULL) {
+		return;
+	}
+
+	if (root->left || root->right) {
+		cout << "(";
+		printSexp(root->left);
+		cout << ".";
+		printSexp(root->right);
+		cout << ")";
+	}
+	else {
+		// Left node
+		if (root->type == 4) {
+			cout << root->val;
+		}
+		else if (root->type == 5) {
+			cout << root->name;
+		}
 	}
 }

@@ -1,7 +1,7 @@
-amr_csr_serial: lisp.o tokenizer.o sexp.o
-	g++ -o lisp lisp.o tokenizer.o sexp.o 
+amr_csr_serial: lisp.o tokenizer.o sexp.o parser.o
+	g++ -o lisp lisp.o tokenizer.o sexp.o parser.o
 
-lisp.o: lisp.cpp tokenizer.hpp sexp.hpp
+lisp.o: lisp.cpp tokenizer.hpp sexp.hpp parser.hpp
 	g++ -c lisp.cpp tokenizer.cpp sexp.cpp -std=gnu++0x
 
 tokenizer.o: tokenizer.hpp
@@ -10,5 +10,8 @@ tokenizer.o: tokenizer.hpp
 sexp.o: sexp.hpp
 	g++ -c sexp.cpp -std=gnu++0x
 
+parser.o: parser.hpp
+	g++ -c parser.cpp -std=gnu++0x
+
 clean: 
-	rm lisp lisp.o tokenizer.o sexp.o
+	rm lisp lisp.o tokenizer.o sexp.o parser.o
