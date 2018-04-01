@@ -4,6 +4,8 @@
 using namespace std;
 
 SExp::SExp() {
+	type = 0;
+	val = -123456;
 	this->left = NULL;
 	this->right = NULL;
 }
@@ -11,6 +13,7 @@ SExp::SExp() {
 SExp::SExp(int i) {
 	type = 4;
 	val = i;
+	name = "";
 	this->left = NULL;
 	this->right = NULL;
 }
@@ -18,7 +21,7 @@ SExp::SExp(int i) {
 SExp::SExp(string s) {
 	type = 5;
 	name = s;
-	val = -1;
+	val = -123456;
 	this->left = NULL;
 	this->right = NULL;
 }

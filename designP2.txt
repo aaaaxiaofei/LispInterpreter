@@ -1,0 +1,32 @@
+==============================================================
+==			Documentation of Lisp Interpreter Part 2		==
+==============================================================
+
+My Lisp interpreter program includes following several parts:
+
+	Main function 		(lisp.cpp)
+	S-Expression class  (sexp.hpp  sexp.cpp)
+	Tokenizer class 	(tokenizer.hpp  tokenizer.cpp)
+	Parser class		(parser.hpp  parser.cpp)
+
+The way my program works is as following:
+
+(1) Main function read in the input file.
+
+(2) Main function call the tokenizer to tokenize the input strings.
+	All the tokens are stored in a Tokenize object. 
+	Calling ckNextToken() returns the type of next token.
+	Calling getNextToken() return the next token and move to next token.
+
+(3) After tokenizing, the program pass the tokens to the Parser. 
+	The Parser evaluate the s-expression. Corresponding error is thrown.
+
+(4) Output
+	The parser output the s-expression right after evaluating each of them.
+	If the s-expression is illegal, it will output the error message instead of
+	an s-expression.
+
+
+
+
+	

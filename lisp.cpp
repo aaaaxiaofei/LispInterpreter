@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 
 	// Read and Tokenize
 	string line;
-	while (!myfile.eof()) {
+	while (myfile.is_open() && !myfile.eof()) {
 		getline(myfile, line);
 		token.tokenize(line);
 	}
@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
 	// Parse the tokens and Output
 	Parser par;
 	par.parse(token);
+
 
 	return 0;
 }
